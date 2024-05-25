@@ -14,8 +14,8 @@ const Home = () => {
     }
   }
 
-  function removeTask(indexToRemove) {
-    setTasks(tasks.filter((task, arrayIndex) => arrayIndex !== indexToRemove));
+  function removeTask(taskToRemove) {
+    setTasks(tasks.filter((task) => task !== taskToRemove));
   }
 
   function tasksLeft() {
@@ -51,16 +51,13 @@ const Home = () => {
           ></input>
         </div>
         <ul className="list-group mt-2">
-          {tasks.map((task, index) => (
-            <li
-              key={index}
-              className="list-group-item d-flex justify-content-between align-items-center "
-            >
+          {tasks.map((task) => (
+            <li className="list-group-item d-flex justify-content-between align-items-center ">
               {task}
               <button
                 type="sm-button"
                 className="removeButton btn btn-ligth btn-sm"
-                onClick={() => removeTask(index)}
+                onClick={() => removeTask(task)}
               >
                 X
               </button>
