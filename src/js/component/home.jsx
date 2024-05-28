@@ -1,42 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 //create your first component
 const Home = () => {
   const [inputValue, setInputValue] = useState("");
   const [tasks, setTasks] = useState([]);
 
-  async function handleSubmit(newTask) {
-    const response = await fetch(
-      "https://playground.4geeks.com/todos/IvanLoza",
-      {
-        method: "POST",
-        body: JSON.stringify(newTask),
-        headers: {
-          "Content-type": "application/json",
-        },
-      }
-    );
-    if (response.ok) {
-      const postData = await response.json();
-      console.log("data sent");
-    } else {
-      console.log("failed to send task to server");
-    }
-  }
-
   function addTask() {
     if (inputValue == "") {
       alert("The task field is empty!");
-      return;
     }
+
     if (inputValue !== "") {
       const capitalizedTask =
         inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
-      const newTask = { label: capitalizedTask, is_done: false };
       setTasks([...tasks, capitalizedTask]);
-
       setInputValue("");
-      handleSubmit(newTask);
     }
   }
 
@@ -68,7 +46,6 @@ const Home = () => {
             placeholder="What needs to be done?"
             type="text"
             value={inputValue}
-            name="label"
             onChange={(event) => setInputValue(event.target.value)}
             onKeyDown={(event) => {
               if (event.key === "Enter") {
