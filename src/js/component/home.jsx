@@ -6,6 +6,10 @@ const Home = () => {
   const [tasks, setTasks] = useState([]);
 
   function addTask() {
+    if (inputValue == "") {
+      alert("The task field is empty!");
+    }
+
     if (inputValue !== "") {
       const capitalizedTask =
         inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
@@ -14,8 +18,8 @@ const Home = () => {
     }
   }
 
-  function removeTask(taskToRemove) {
-    setTasks(tasks.filter((task) => task !== taskToRemove));
+  function removeTask(indexToRemove) {
+    setTasks(tasks.filter((task, index) => index !== indexToRemove));
   }
 
   function tasksLeft() {
@@ -51,13 +55,16 @@ const Home = () => {
           ></input>
         </div>
         <ul className="list-group mt-2">
-          {tasks.map((task) => (
-            <li className="list-group-item d-flex justify-content-between align-items-center ">
+          {tasks.map((task, index) => (
+            <li
+              className="list-group-item d-flex justify-content-between align-items-center "
+              key={index}
+            >
               {task}
               <button
                 type="sm-button"
                 className="removeButton btn btn-ligth btn-sm"
-                onClick={() => removeTask(task)}
+                onClick={() => removeTask(index)}
               >
                 X
               </button>
