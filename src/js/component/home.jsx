@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 const Home = () => {
   const [inputValue, setInputValue] = useState("");
   const [tasks, setTasks] = useState([]);
+  const [userName, setUserName] = useState("");
 
   useEffect(() => {
     getTasks();
@@ -12,14 +13,36 @@ const Home = () => {
   async function getTasks() {
     try {
       const response = await fetch(
-        "https://playground.4geeks.com/todo/users/IvanLoza"
+        `https://playground.4geeks.com/todo/users/${userName}`
       );
       const data = await response.json();
-      const previousTasks = data.todos.map((task) => task.label);
+      console.log(data);
+      const previousTasks = data.todos.map((task) => ({
+        id: task.id,
+        label: task.label,
+      }));
 
       setTasks(previousTasks);
     } catch (e) {
       console.log(e);
+    }
+  }
+  async function deleteTasks(id) {
+    const response = await fetch(
+      `https://playground.4geeks.com/todo/todos/${id}`,
+      {
+        method: "DELETE",
+
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
+    if (response.ok) {
+      const postData = await response.json();
+      console.log(postData);
+    } else {
+      alert("Task has not been deleted");
     }
   }
 
@@ -31,7 +54,7 @@ const Home = () => {
         body: JSON.stringify({
           label: inputValue,
           is_done: false,
-        }), // JSON.stringify() JS -> STRING
+        }),
         headers: {
           "Content-type": "application/json",
         },
@@ -39,31 +62,63 @@ const Home = () => {
     );
     if (response.ok) {
       const postData = await response.json();
+      getTasks();
+      //setTasks(...tasks, postData);
       console.log(postData);
     } else {
-      alert("Task not sent to server");
+      alert("Task not sent to server, Create User first");
+      window.location.reload();
     }
-    // Metodo post de quien
   }
-  // async function deleteTasksServer(taskId) {
-  //   const response = await fetch(
-  //     `https://playground.4geeks.com/todo/todos/${taskId}`,
-  //     {
-  //       method: "DELETE",
 
-  //       headers: {
-  //         "Content-type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   if (response.ok) {
-  //     const postData = await response.json();
-  //     console.log(postData);
-  //   } else {
-  //     alert("Task is not deleted from server");
-  //   }
-  //   // Metodo post de quien
-  // }
+  async function deleteUser(userName) {
+    const response = await fetch(
+      `https://playground.4geeks.com/todo/users/${userName}`,
+      {
+        method: "DELETE",
+        body: JSON.stringify({
+          user_name: userName,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
+    if (response.ok) {
+      window.location.reload();
+    } else {
+      alert("User has not been deleted");
+    }
+  }
+
+  const handleUserCreation = () => {
+    const name = prompt("Plese enter a User Name");
+    if (name) {
+      setUserName(name);
+      createUser(name);
+    }
+  };
+  async function createUser(name) {
+    const response = await fetch(
+      `https://playground.4geeks.com/todo/users/${name}`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          user_name: name,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
+    if (response.ok) {
+      alert("User created succesfully, write some ToDos!");
+      const postData = await response.json();
+      console.log(postData);
+    } else {
+      alert("User has not been created");
+    }
+  }
 
   function addTask() {
     if (inputValue == "") {
@@ -71,16 +126,15 @@ const Home = () => {
     }
 
     if (inputValue !== "") {
-      const capitalizedTask =
-        inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
-      setTasks([...tasks, capitalizedTask]);
+      setTasks([...tasks, inputValue]);
       setInputValue("");
       pushTasks();
     }
   }
 
-  function removeTask(indexToRemove) {
-    setTasks(tasks.filter((task, index) => index !== indexToRemove));
+  function removeTask(id) {
+    setTasks(tasks.filter((task, index) => task.id !== id));
+    deleteTasks(id);
   }
 
   function tasksLeft() {
@@ -98,7 +152,7 @@ const Home = () => {
 
   return (
     <div className="container-fluid d-flex justify-content-center">
-      <div className="mt-5">
+      <div className="mt-5 ">
         <h1 className=" display-1 ">TO-DO LIST</h1>
         <div className="containter d-flex ">
           <input
@@ -121,19 +175,36 @@ const Home = () => {
               className="list-group-item d-flex justify-content-between align-items-center "
               key={index}
             >
-              {task}
+              {task.label}
               <button
                 type="sm-button"
                 className="removeButton btn btn-ligth btn-sm"
-                onClick={() => removeTask(index)}
+                onClick={() => removeTask(task.id)}
               >
                 X
               </button>
             </li>
           ))}
         </ul>
-
-        <p className="tasksLeft mt-1 ms-3">{tasksLeft()}</p>
+        <div className="text-start mt-2">
+          <p className="ms-3 text-muted">{tasksLeft()}</p>
+        </div>
+        <div className="d-flex justify-content-between">
+          <button
+            type="button"
+            className="cleanButton btn-sm  btn-success mt-2 "
+            onClick={() => deleteUser(userName)}
+          >
+            Clean all tasks
+          </button>
+          <button
+            type="button"
+            className="createUserButton btn-sm  btn-success mt-2 "
+            onClick={handleUserCreation}
+          >
+            Create User
+          </button>
+        </div>
       </div>
     </div>
   );

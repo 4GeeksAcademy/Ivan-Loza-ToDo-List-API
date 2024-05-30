@@ -24,3 +24,15 @@
 .tasksLeft {
   color: gray;
 }
+
+.createUserButton {
+  border: solid rgb(154, 154, 154);
+  background-color: rgb(176, 176, 176);
+  color: white;
+}
+
+.cleanButton {
+  border: solid rgb(154, 154, 154);
+  background-color: rgb(176, 176, 176);
+  color: greenyellow;
+}
