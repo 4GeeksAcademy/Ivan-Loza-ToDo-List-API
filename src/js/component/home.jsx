@@ -39,8 +39,7 @@ const Home = () => {
       }
     );
     if (response.ok) {
-      const postData = await response.json();
-      console.log(postData);
+      console.log("deleted succesfully");
     } else {
       alert("Task has not been deleted");
     }
@@ -48,7 +47,7 @@ const Home = () => {
 
   async function pushTasks() {
     const response = await fetch(
-      "https://playground.4geeks.com/todo/todos/IvanLoza",
+      `https://playground.4geeks.com/todo/todos/${userName}`,
       {
         method: "POST",
         body: JSON.stringify({
@@ -154,6 +153,7 @@ const Home = () => {
     <div className="container-fluid d-flex justify-content-center">
       <div className="mt-5 ">
         <h1 className=" display-1 ">TO-DO LIST</h1>
+        <div>{userName && <p>{userName}'s tasks:</p>}</div>
         <div className="containter d-flex ">
           <input
             className="form-control"
@@ -195,7 +195,7 @@ const Home = () => {
             className="cleanButton btn-sm  btn-success mt-2 "
             onClick={() => deleteUser(userName)}
           >
-            Clean all tasks
+            Clear all Tasks
           </button>
           <button
             type="button"

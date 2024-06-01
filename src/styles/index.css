@@ -26,13 +26,57 @@
 }
 
 .createUserButton {
-  border: solid rgb(154, 154, 154);
-  background-color: rgb(176, 176, 176);
-  color: white;
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  letter-spacing: 2px;
+  text-decoration: none;
+
+  color: #000;
+  cursor: pointer;
+  border: 3px solid;
+  padding: 0.25em 0.5em;
+  box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 2px 2px 0px 0px,
+    3px 3px 0px 0px;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.createUserButton:active {
+  box-shadow: 0px 0px 0px 0px;
+  top: 5px;
+  left: 5px;
 }
 
 .cleanButton {
-  border: solid rgb(154, 154, 154);
-  background-color: rgb(176, 176, 176);
-  color: greenyellow;
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  letter-spacing: 2px;
+  text-decoration: none;
+
+  color: #000;
+  cursor: pointer;
+  border: 3px solid;
+  padding: 0.25em 0.5em;
+  box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 2px 2px 0px 0px,
+    3px 3px 0px 0px;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.cleanButton:active {
+  box-shadow: 0px 0px 0px 0px;
+  top: 5px;
+  left: 5px;
+}
+
+body {
+  background-color: gainsboro;
+}
+
+h1 {
+  font-family: "Open Sans", sans-serif;
+  color: black;
 }
