@@ -6,10 +6,6 @@ const Home = () => {
   const [tasks, setTasks] = useState([]);
   const [userName, setUserName] = useState("");
 
-  useEffect(() => {
-    getTasks();
-  }, []);
-
   async function getTasks() {
     try {
       const response = await fetch(
@@ -62,7 +58,6 @@ const Home = () => {
     if (response.ok) {
       const postData = await response.json();
       getTasks();
-      //setTasks(...tasks, postData);
       console.log(postData);
     } else {
       alert("Task not sent to server, Create User first");
@@ -148,6 +143,10 @@ const Home = () => {
       return "Just " + tasksToDo + " tasks left to do!";
     }
   }
+
+  useEffect(() => {
+    getTasks();
+  }, []);
 
   return (
     <div className="container-fluid d-flex justify-content-center">
